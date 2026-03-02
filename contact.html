@@ -13,7 +13,7 @@
 <body>
 
 <header class="site-header">
-  <a class="logo" href="index.html">
+  <a class="logo" href="index.html" data-turn>
     <img src="images/logo-small.png" alt="ロゴ" class="logo-icon">
     <span>エクセレントラウンジ ミューズ．女神</span>
   </a>
@@ -86,6 +86,58 @@
       </div>
     </div>
   </section>
+
+
+    <script>
+  (function () {
+    const root = document.getElementById("whisky-slideshow");
+    if (!root) return;
+
+    const slides = Array.from(root.querySelectorAll(".slide"));
+    if (slides.length <= 1) return;
+
+    let i = 0;
+    const intervalMs = 3000; // 3秒ごと（好きに変更）
+
+    setInterval(() => {
+      slides[i].classList.remove("is-active");
+      i = (i + 1) % slides.length;
+      slides[i].classList.add("is-active");
+    }, intervalMs);
+  })();
+</script>
+
+
+<div id="page-turn" class="page-turn" aria-hidden="true"></div>
+
+<script>
+  (function () {
+    const overlay = document.getElementById("page-turn");
+    if (!overlay) return;
+
+    // data-turn が付いたリンクだけ「めくり」演出する
+    document.addEventListener("click", (e) => {
+      const a = e.target.closest("a[data-turn]");
+      if (!a) return;
+
+      const href = a.getAttribute("href");
+      if (!href || href.startsWith("#")) return;
+
+      e.preventDefault();
+
+      // 連打防止
+      if (overlay.classList.contains("is-on")) return;
+
+      overlay.classList.add("is-on");
+
+      // アニメの時間に合わせて遷移
+      setTimeout(() => {
+        window.location.href = href;
+      }, 520);
+    });
+  })();
+</script>
+
 
 </body>
 </html>
